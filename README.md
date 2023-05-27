@@ -1,6 +1,8 @@
 # Competition_3v3snakes
 
-#运行rl_trainer\main.py --max_train_steps=xx 后，模型存在model里。把其中一个放到agent\rl里，然后改submission.py里的文件名，之后就能用evaluation_local.py了。
+#运行rl_trainer\main.py --max_train_steps=xx 后，模型存在model里。
+把其中一个放到agent\rl里，然后改submission.py里的文件名，之后就能用evaluation_local.py了。
+运行run_log.py就能得到跑动画需要的json，存在logs里。
 
 ### Environment
 
