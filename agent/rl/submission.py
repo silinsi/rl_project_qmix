@@ -162,6 +162,7 @@ def logits2action(logits):
 
 agent = RLAgent(26, 4, 3)
 actor_net = os.path.dirname(os.path.abspath(__file__)) + "/qmix_eval_rnn_number_12_seed_0_step_0k.pth"
+
 agent.load_model(actor_net)
 
 

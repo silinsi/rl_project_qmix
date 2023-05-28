@@ -10,6 +10,25 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
+def get_dir():#get the last model direction
+        dir="model\env"
+        rlist=os.listdir(dir)
+        a=[]
+        for i in range(len(rlist)):
+            a.append("")
+            for j in rlist[i]:
+                if j<"0" or j>"9":
+                    if len(a[i])>0:
+                        if a[i][-1]!="s":
+                            a[i]+="s"
+                else:
+                    a[i]+=j
+            a[i]=[a[i].split("s")[2]]
+            for j in range(len(a[i])):
+                a[i][j]=int(a[i][j])
+            k=np.argmax(a)
+        return dir+"\\"+rlist[k]
+
 def get_actions(state, algo, indexs):
 
     # random agent
@@ -97,7 +116,12 @@ if __name__ == "__main__":
     parser.add_argument("--my_ai", default="rl", help="rl/random")
     parser.add_argument("--opponent", default="random", help="rl/random")
     parser.add_argument("--episode", default=100)
+    parser.add_argument('--new_model', action='store_true')
     args = parser.parse_args()
 
     agent_list = [args.my_ai, args.opponent]
+    if args.new_model:
+            actor_net=get_dir()
+            agent.load_model(actor_net)
+            print("evaluate new model "+actor_net)
     run_game(game, algo_list=agent_list, episode=args.episode, verbose=False)
