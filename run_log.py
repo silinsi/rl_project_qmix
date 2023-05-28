@@ -161,8 +161,8 @@ if __name__ == "__main__":
     render_mode = True
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--my_ai", default="random", help="rl/random")
-    parser.add_argument("--opponent", default="rl", help="rl/random")
+    parser.add_argument("--my_ai", default="rl", help="rl/random")
+    parser.add_argument("--opponent", default="random", help="rl/random")
     args = parser.parse_args()
 
     policy_list = [args.my_ai, args.opponent]

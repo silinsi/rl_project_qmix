@@ -126,7 +126,8 @@ class Runner_QMIX:
         win_rate = win_times / self.args.evaluate_times
         evaluate_reward = evaluate_reward / self.args.evaluate_times
         self.win_rates.append(win_rate)
-        print("total_steps:{} \t win_rate:{} \t evaluate_reward:{}".format(self.total_steps, win_rate, evaluate_reward))
+        score=np.sum(evaluate_reward[0:3])-np.sum(evaluate_reward[3:6])
+        print("total_steps:{} \t score:{} \t evaluate_reward:{}".format(self.total_steps, score, evaluate_reward))
         self.writer.add_scalar('win_rate_{}'.format(self.env_name), win_rate, global_step=self.total_steps)
         self.agent_n.save_model('env','qmix',evaluate_num,self.seed,self.total_steps)
         
@@ -212,11 +213,11 @@ if __name__ == '__main__':
     parser.add_argument('--tau', default=0.001, type=float)
     parser.add_argument('--gamma', default=0.95, type=float)
     parser.add_argument('--seed', default=1, type=int)
-    parser.add_argument('--a_lr', default=0.0001, type=float)
-    parser.add_argument('--c_lr', default=0.0001, type=float)
+    #parser.add_argument('--a_lr', default=0.0001, type=float)
+    #parser.add_argument('--c_lr', default=0.0001, type=float)
     #parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--epsilon', default=0.5, type=float)
-    parser.add_argument('--epsilon_speed', default=0.99998, type=float)
+    #parser.add_argument('--epsilon_speed', default=0.99998, type=float)
 
     parser.add_argument("--save_interval", default=1000, type=int)
     parser.add_argument("--model_episode", default=0, type=int)
@@ -230,7 +231,7 @@ if __name__ == '__main__':
     parser.add_argument("--max_train_steps", type=int, default=int(1e6), help=" Maximum number of training steps")
     parser.add_argument("--evaluate_freq", type=float, default=5000, help="Evaluate the policy every 'evaluate_freq' steps")
     parser.add_argument("--evaluate_times", type=float, default=32, help="Evaluate times")
-    parser.add_argument("--save_freq", type=int, default=int(1e5), help="Save frequency")
+    #parser.add_argument("--save_freq", type=int, default=int(1e5), help="Save frequency")
 
     parser.add_argument("--algorithm", type=str, default="QMIX", help="QMIX or VDN")
     #parser.add_argument("--epsilon", type=float, default=1.0, help="Initial epsilon")
