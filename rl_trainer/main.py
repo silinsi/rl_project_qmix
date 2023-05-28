@@ -190,7 +190,8 @@ class Runner_QMIX:
             s = self.env.get_state()
             avail_a_n = self.env.get_avail_actions()
             self.replay_buffer.store_last_step(episode_step + 1, obs_n, s, avail_a_n)'''
-            pass;
+            pass
+            
 
         return win_tag, episode_reward, episode_step + 1
 
