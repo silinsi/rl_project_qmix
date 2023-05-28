@@ -1,6 +1,6 @@
 import argparse
 import datetime
-
+import numpy as np
 from tensorboardX import SummaryWriter
 
 from pathlib import Path
@@ -63,8 +63,41 @@ class Runner_QMIX:
         self.height=self.env.board_height;
         self.width=self.env.board_width;
 
+    def get_dir(self,):#get the last model direction
+        dir="model\env"
+        rlist=os.listdir(dir)
+        a=[]
+        b=[]
+        for i in range(len(rlist)):
+            a.append("")
+            for j in rlist[i]:
+                if j<"0" or j>"9":
+                    if len(a[i])>0:
+                        if a[i][-1]!="s":
+                            a[i]+="s"
+                else:
+                    a[i]+=j
+            b.append(a[i].split("s")[:-1])
+            a[i]=[a[i].split("s")[2]]
+            for j in range(len(a[i])):
+                a[i][j]=int(a[i][j])
+            k=np.argmax(a)
+        return dir+"\\"+rlist[k],int(b[k][0]),int(b[k][2])
+
+
     def run(self, ):
         evaluate_num = -1  # Record the number of evaluations
+        
+        #load model
+        if self.args.load_model:
+            dir,load_eva,load_num=self.get_dir()
+            torch.load( dir)
+            evaluate_num=load_eva
+            self.total_steps=load_num*1000
+            self.args.max_train_steps+=self.total_steps
+            print("model loaded "+ dir)
+
+        
         while self.total_steps < self.args.max_train_steps:
             if self.total_steps // self.args.evaluate_freq > evaluate_num:
                 evaluate_num += 1
@@ -76,7 +109,7 @@ class Runner_QMIX:
 
             if self.replay_buffer.current_size >= self.args.batch_size:
                 self.agent_n.train(self.replay_buffer, self.total_steps)  # Training
-
+        evaluate_num+=1
         self.evaluate_policy(evaluate_num)
         print("end");
         #self.env.close()
@@ -190,8 +223,8 @@ if __name__ == '__main__':
     parser.add_argument('--log_dir', default=datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
 
     parser.add_argument("--load_model", action='store_true')  # 加是true；不加为false
-    parser.add_argument("--load_model_run", default=2, type=int)
-    parser.add_argument("--load_model_run_episode", default=4000, type=int)
+    #parser.add_argument("--load_model_run", default=2, type=int)
+    #parser.add_argument("--load_model_run_episode", default=4000, type=int)
     #parser.add_argument("--max_train_steps", type=int, default=int(1e6), help=" Maximum number of training steps")
 
     parser.add_argument("--max_train_steps", type=int, default=int(1e6), help=" Maximum number of training steps")
