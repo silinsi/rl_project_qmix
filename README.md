@@ -9,5 +9,8 @@
 
 更新：可以使用参数--load_model 来读取最新的model，继续训练了，重新训练请手动删除model\env下所有模型，否则会替换同名模型
 
+可调参数有：lr,gamma,batch_size,target_update_freq,tau,use_lr_decay
+	推测其中较敏感的数值有lr,gamma,tau
+
 P.S.如果模型保存失败，很可能是路径有中文的原因
 
